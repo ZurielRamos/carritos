@@ -730,11 +730,73 @@ button {
 }
 
 .cart-item {
+  padding: 0.7rem 0;
+  border-bottom: 1px dashed rgba(210, 165, 108, 0.35);
+}
+
+.cart-row {
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  padding: 0.7rem 0;
-  border-bottom: 1px dashed rgba(210, 165, 108, 0.35);
+}
+
+.comment-btn {
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px dashed rgba(210, 165, 108, 0.6);
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(255, 244, 224, 0.75);
+  font-size: 0.78rem;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.comment-btn.has {
+  border-style: solid;
+  background: rgba(210, 165, 108, 0.15);
+  color: var(--gold-light);
+  font-style: italic;
+}
+
+.comment-edit {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.comment-edit input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--orange);
+  border-radius: 10px;
+  background: rgba(255, 244, 224, 0.1);
+  color: var(--cream);
+  font: inherit;
+  font-size: 0.82rem;
+}
+
+.comment-edit input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(242, 154, 46, 0.4);
+}
+
+.comment-edit button {
+  padding: 0 0.9rem;
+  border: none;
+  border-radius: 10px;
+  background: var(--orange);
+  color: var(--navy-deep);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .cart-item img {

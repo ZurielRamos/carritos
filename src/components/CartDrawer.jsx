@@ -7,8 +7,11 @@ const MODES = [
   { id: 'domicilio', label: 'Domicilio', icon: '🛵' },
 ]
 
-export function buildWhatsAppUrl({ items, name, notes, mode, address }) {
-  const lines = items.map((i) => `• ${i.qty} x ${i.name}`)
+export function buildWhatsAppUrl({ items, name, notes, mode, address, phone }) {
+  const lines = items.map((i) => {
+    const comment = i.comment?.trim()
+    return comment ? `• ${i.qty} x ${i.name}\n   💬 ${comment}` : `• ${i.qty} x ${i.name}`
+  })
   const modeLabel = MODES.find((m) => m.id === mode)
   const message = [
     `Hola ${BUSINESS_NAME}! 🍔 Quiero hacer un pedido:`,
@@ -17,6 +20,7 @@ export function buildWhatsAppUrl({ items, name, notes, mode, address }) {
     '',
     modeLabel ? `${modeLabel.icon} *Tipo de pedido:* ${modeLabel.label}` : null,
     mode === 'domicilio' && address ? `📍 *Dirección:* ${address}` : null,
+    mode === 'domicilio' && phone ? `📞 *Teléfono:* ${phone}` : null,
     name ? `👤 *Nombre:* ${name}` : null,
     notes ? `📝 *Notas:* ${notes}` : null,
   ]
@@ -26,20 +30,90 @@ export function buildWhatsAppUrl({ items, name, notes, mode, address }) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
 }
 
-export default function CartDrawer({ open, onClose, items, total, onAdd, onRemove, onClear }) {
+function CartLine({ item, onAdd, onRemove, onComment }) {
+  const [editing, setEditing] = useState(false)
+  const hasComment = item.comment.trim().length > 0
+
+  return (
+    <motion.li
+      layout
+      className="cart-item"
+      initial={{ opacity: 0, x: 60 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -60, height: 0 }}
+    >
+      <div className="cart-row">
+        <img src={item.image} alt="" />
+        <div className="cart-item-info">
+          <strong>{item.name}</strong>
+          <small>{formatPrice(item.price * item.qty)}</small>
+        </div>
+        <div className="qty small">
+          <button onClick={() => onRemove(item.id)} aria-label="Quitar uno">
+            −
+          </button>
+          <span>{item.qty}</span>
+          <button onClick={() => onAdd(item.id)} aria-label="Agregar uno">
+            +
+          </button>
+        </div>
+      </div>
+
+      <AnimatePresence initial={false} mode="wait">
+        {editing ? (
+          <motion.div
+            key="edit"
+            className="comment-edit"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+          >
+            <input
+              autoFocus
+              maxLength={120}
+              value={item.comment}
+              onChange={(e) => onComment(item.id, e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && setEditing(false)}
+              placeholder="Ej: sin cebolla, salsa aparte…"
+              aria-label={`Comentario para ${item.name}`}
+            />
+            <button type="button" onClick={() => setEditing(false)}>
+              Listo
+            </button>
+          </motion.div>
+        ) : (
+          <motion.button
+            key="view"
+            type="button"
+            className={`comment-btn ${hasComment ? 'has' : ''}`}
+            onClick={() => setEditing(true)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <span aria-hidden="true">💬</span> {hasComment ? item.comment : 'Agregar comentario'}
+          </motion.button>
+        )}
+      </AnimatePresence>
+    </motion.li>
+  )
+}
+
+export default function CartDrawer({ open, onClose, items, total, onAdd, onRemove, onComment, onClear }) {
   const [name, setName] = useState('')
   const [notes, setNotes] = useState('')
   const [mode, setMode] = useState(null) // 'mesa' | 'domicilio'
   const [address, setAddress] = useState('')
+  const [phone, setPhone] = useState('')
 
   const needsAddress = mode === 'domicilio'
-  const canSend = mode !== null && (!needsAddress || address.trim().length > 0)
+  const phoneOk = phone.replace(/\D/g, '').length >= 7
+  const canSend = mode !== null && (!needsAddress || (address.trim().length > 0 && phoneOk))
 
-  const hint = !mode
-    ? 'Elige si es en mesa o a domicilio'
-    : needsAddress && !address.trim()
-      ? 'Escribe la dirección para el domicilio'
-      : null
+  let hint = null
+  if (!mode) hint = 'Elige si es en mesa o a domicilio'
+  else if (needsAddress && !address.trim()) hint = 'Escribe la dirección para el domicilio'
+  else if (needsAddress && !phoneOk) hint = 'Escribe un teléfono de contacto válido'
 
   const send = () => {
     if (!canSend) return
@@ -50,6 +124,7 @@ export default function CartDrawer({ open, onClose, items, total, onAdd, onRemov
         notes: notes.trim(),
         mode,
         address: address.trim(),
+        phone: phone.trim(),
       }),
       '_blank',
       'noopener',
@@ -58,6 +133,7 @@ export default function CartDrawer({ open, onClose, items, total, onAdd, onRemov
     setNotes('')
     setMode(null)
     setAddress('')
+    setPhone('')
     onClose()
   }
 
@@ -103,29 +179,13 @@ export default function CartDrawer({ open, onClose, items, total, onAdd, onRemov
               <ul className="drawer-list">
                 <AnimatePresence initial={false}>
                   {items.map((it) => (
-                    <motion.li
+                    <CartLine
                       key={it.id}
-                      layout
-                      className="cart-item"
-                      initial={{ opacity: 0, x: 60 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -60, height: 0 }}
-                    >
-                      <img src={it.image} alt="" />
-                      <div className="cart-item-info">
-                        <strong>{it.name}</strong>
-                        <small>{formatPrice(it.price * it.qty)}</small>
-                      </div>
-                      <div className="qty small">
-                        <button onClick={() => onRemove(it.id)} aria-label="Quitar uno">
-                          −
-                        </button>
-                        <span>{it.qty}</span>
-                        <button onClick={() => onAdd(it.id)} aria-label="Agregar uno">
-                          +
-                        </button>
-                      </div>
-                    </motion.li>
+                      item={it}
+                      onAdd={onAdd}
+                      onRemove={onRemove}
+                      onComment={onComment}
+                    />
                   ))}
                 </AnimatePresence>
               </ul>
@@ -173,6 +233,27 @@ export default function CartDrawer({ open, onClose, items, total, onAdd, onRemov
                         onChange={(e) => setAddress(e.target.value)}
                         placeholder="Calle, número, barrio, referencia"
                         autoComplete="street-address"
+                      />
+                    </motion.label>
+                  )}
+                  {needsAddress && (
+                    <motion.label
+                      key="phone"
+                      className="field"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <span>Teléfono de contacto *</span>
+                      <input
+                        type="tel"
+                        inputMode="tel"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value.replace(/[^\d+\s()-]/g, ''))}
+                        placeholder="Ej: 300 123 4567"
+                        autoComplete="tel"
+                        maxLength={20}
                       />
                     </motion.label>
                   )}

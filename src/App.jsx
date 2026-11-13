@@ -1,28 +1,45 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import TopBar from './components/TopBar'
 import MenuItem from './components/MenuItem'
 import DrinksSlider from './components/DrinksSlider'
 import CartDrawer from './components/CartDrawer'
-import { categories, products } from './data/menu'
+import { useProducts } from './hooks/useProducts'
 import { formatPrice } from './config'
 
 const DRINKS = 'Bebidas'
 
 export default function App() {
+  const { products, categories } = useProducts()
   const [active, setActive] = useState('Todas')
+
+  // Si la hoja cambia y la categoría elegida ya no existe, vuelve a "Todas"
+  useEffect(() => {
+    if (!categories.includes(active)) setActive('Todas')
+  }, [categories, active])
   const [cart, setCart] = useState({}) // { [id]: qty }
   const [open, setOpen] = useState(false)
 
+  const [comments, setComments] = useState({}) // { [id]: string }
+
   const add = (id) => setCart((c) => ({ ...c, [id]: (c[id] || 0) + 1 }))
-  const remove = (id) =>
+  const remove = (id) => {
     setCart((c) => {
       const next = { ...c, [id]: (c[id] || 0) - 1 }
       if (next[id] <= 0) delete next[id]
       return next
     })
+    // Si el producto sale del pedido, también se borra su comentario
+    if ((cart[id] || 0) <= 1) {
+      setComments((c) => {
+        const { [id]: _removed, ...rest } = c
+        return rest
+      })
+    }
+  }
+  const setComment = (id, text) => setComments((c) => ({ ...c, [id]: text }))
 
-  const drinks = useMemo(() => products.filter((p) => p.category === DRINKS), [])
+  const drinks = useMemo(() => products.filter((p) => p.category === DRINKS), [products])
 
   // En "Todas" las bebidas van en el slider, no en la lista
   const visible = useMemo(
@@ -30,14 +47,17 @@ export default function App() {
       active === 'Todas'
         ? products.filter((p) => p.category !== DRINKS)
         : products.filter((p) => p.category === active),
-    [active],
+    [active, products],
   )
 
   const showDrinksSlider = active !== DRINKS && drinks.length > 0
 
   const items = useMemo(
-    () => products.filter((p) => cart[p.id]).map((p) => ({ ...p, qty: cart[p.id] })),
-    [cart],
+    () =>
+      products
+        .filter((p) => cart[p.id])
+        .map((p) => ({ ...p, qty: cart[p.id], comment: comments[p.id] || '' })),
+    [cart, comments, products],
   )
   const count = items.reduce((s, i) => s + i.qty, 0)
   const total = items.reduce((s, i) => s + i.qty * i.price, 0)
@@ -149,7 +169,11 @@ export default function App() {
         total={total}
         onAdd={add}
         onRemove={remove}
-        onClear={() => setCart({})}
+        onComment={setComment}
+        onClear={() => {
+          setCart({})
+          setComments({})
+        }}
       />
     </>
   )

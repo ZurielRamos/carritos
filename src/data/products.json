@@ -5,7 +5,7 @@
     "name": "Mini chuzos",
     "ingredients": ["Arepa", "Ensalada", "Papas", "Queso", "Chuzo"],
     "price": 10000,
-    "image": "/burger.jpg"
+    "image": "/mini_chuzo.jpeg"
   },
   {
     "id": 2,
@@ -13,7 +13,7 @@
     "name": "Choripapas",
     "ingredients": ["Arepa", "Ensalada", "Papas", "Queso", "Chorizo"],
     "price": 10000,
-    "image": "/burger.jpg"
+    "image": "/choripapas.jpeg"
   },
   {
     "id": 3,
@@ -21,7 +21,7 @@
     "name": "Quesadillas",
     "ingredients": ["Queso", "Maicitos", "Tocineta", "Tortilla"],
     "price": 10000,
-    "image": "/burger.jpg"
+    "image": "/quesadillas.jpg"
   },
   {
     "id": 4,
@@ -29,7 +29,7 @@
     "name": "Arepa Burguer",
     "ingredients": ["Arepa", "Carne de hamburguesa", "Queso", "Tocineta", "Ensalada"],
     "price": 10000,
-    "image": "/burger.jpg"
+    "image": "/arepa_burguer.webp"
   },
   {
     "id": 5,
@@ -37,7 +37,7 @@
     "name": "Hamburguesa",
     "ingredients": ["Pan", "Carne de hamburguesa", "Queso", "Tocineta", "Ensalada"],
     "price": 18000,
-    "image": "/burger.jpg"
+    "image": "/hamburguesa.jpg"
   },
   {
     "id": 6,
@@ -45,7 +45,7 @@
     "name": "Burritos",
     "ingredients": ["Tortilla", "Carne", "Pollo", "Tocineta", "Queso", "Ensalada", "Maicitos"],
     "price": 12000,
-    "image": "/burger.jpg"
+    "image": "/burrito.avif"
   },
   {
     "id": 7,
@@ -53,7 +53,7 @@
     "name": "Patacón con carne",
     "ingredients": ["Patacón", "Carne", "Pollo", "Tocineta", "Queso", "Ensalada", "Maicitos"],
     "price": 12000,
-    "image": "/burger.jpg"
+    "image": "/patacon_carne.webp"
   },
   {
     "id": 8,
@@ -61,7 +61,7 @@
     "name": "Arepa con carne",
     "ingredients": ["Arepa", "Carne", "Pollo", "Tocineta", "Queso", "Ensalada", "Maicitos"],
     "price": 12000,
-    "image": "/burger.jpg"
+    "image": "/arepa_carne.jpg"
   },
   {
     "id": 9,
@@ -69,7 +69,7 @@
     "name": "Salchipapas",
     "ingredients": ["Papas", "Salchicha", "Carne", "Pollo", "Tocineta", "Queso", "Butifarra"],
     "price": 15000,
-    "image": "/burger.jpg"
+    "image": "/salchipapas.jpeg"
   },
   {
     "id": 10,
@@ -88,7 +88,7 @@
       "Pechuga"
     ],
     "price": 18000,
-    "image": "/burger.jpg"
+    "image": "/picada.jpeg"
   },
   {
     "id": 11,
@@ -96,7 +96,7 @@
     "name": "Perro",
     "ingredients": ["Pan", "Salchicha", "Queso", "Tocineta", "Ensalada"],
     "price": 12000,
-    "image": "/burger.jpg"
+    "image": "/perro.jpg"
   },
   {
     "id": 12,
@@ -104,57 +104,76 @@
     "name": "Perra",
     "ingredients": ["Pan", "Queso", "Tocineta", "Ensalada"],
     "price": 15000,
-    "image": "/burger.jpg"
+    "image": "/perra.jpg"
   },
   {
     "id": 13,
     "category": "Extras",
     "name": "Butifarras",
     "price": 1000,
-    "image": "/burger.jpg"
+    "image": "/butifarra.webp"
   },
   {
     "id": 14,
     "category": "Bebidas",
-    "name": "Gaseosa 400ml",
-    "price": 4500,
-    "image": "/bebida.webp"
+    "name": "Cerveza Pilsen",
+    "price": 4000,
+    "image": "/pilsen.jpg"
   },
   {
     "id": 15,
     "category": "Bebidas",
-    "name": "Limonada Natural",
-    "price": 6000,
-    "badge": "Fresca",
-    "image": "/bebida.webp"
+    "name": "Cerveza Aguila Light",
+    "price": 4000,
+    "image": "/aguila_light.webp"
   },
   {
     "id": 16,
     "category": "Bebidas",
-    "name": "Jugo en Agua",
-    "price": 6500,
-    "image": "/bebida.webp"
+    "name": "Agua Brisa 600 ML",
+    "price": 3500,
+    "image": "/agua_brisa.webp"
   },
   {
     "id": 17,
     "category": "Bebidas",
-    "name": "Malteada de Vainilla",
-    "price": 10000,
-    "badge": "Nueva",
-    "image": "/bebida.webp"
+    "name": "Gaseosa Premio 400 ML",
+    "price": 3000,
+    "image": "/premio.webp"
   },
   {
     "id": 18,
     "category": "Bebidas",
-    "name": "Té Frío",
-    "price": 5000,
+    "name": "Coca - Cola 400 ML",
+    "price": 3500,
     "image": "/bebida.webp"
   },
   {
     "id": 19,
     "category": "Bebidas",
-    "name": "Agua Botella",
+    "name": "Coca - Cola 1,5 L",
+    "price": 7800,
+    "image": "/coca_cola.webp"
+  },
+  {
+    "id": 20,
+    "category": "Bebidas",
+    "name": "Gaseosa Uva 400 ML",
     "price": 3000,
-    "image": "/bebida.webp"
+    "image": "/uva.webp"
+  },
+  {
+    "id": 21,
+    "category": "Bebidas",
+    "name": "Gaseosa Naranjada 400 ML",
+    "price": 3000,
+    "image": "/naranjada.webp"
+  },
+  {
+    "id": 22,
+    "category": "Bebidas",
+    "name": "Gaseosa Colombiana 400 ML",
+    "price": 3000,
+    "image": "/colombiana.webp"
   }
 ]
