@@ -40,3 +40,10 @@ export const formatPrice = (n) =>
     currency: 'COP',
     maximumFractionDigits: 0,
   }).format(n)
+
+// Datos de la cuenta para pagos por transferencia (se editan en el .env)
+export const TRANSFER = {
+  bank: (import.meta.env.VITE_TRANSFER_BANK || '').trim(),
+  name: (import.meta.env.VITE_TRANSFER_NAME || '').trim(),
+  account: (import.meta.env.VITE_TRANSFER_ACCOUNT || '').trim(),
+}

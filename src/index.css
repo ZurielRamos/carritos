@@ -996,6 +996,146 @@ button {
   overflow-y: auto;
 }
 
+/* ---------- Forma de pago ---------- */
+.pay {
+  margin-bottom: 0.2rem;
+}
+
+.pay-question {
+  margin-bottom: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--gold-light);
+}
+
+.money-input {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.8rem;
+  border: 1px solid rgba(210, 165, 108, 0.6);
+  border-radius: 12px;
+  background: rgba(255, 244, 224, 0.1);
+}
+
+.money-input:focus-within {
+  outline: 2px solid var(--orange);
+}
+
+.money-input b {
+  color: var(--gold-light);
+}
+
+.money-input input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.6rem 0;
+  border: none;
+  background: transparent;
+  color: var(--cream);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.money-input input:focus {
+  outline: none;
+}
+
+.bills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.9rem;
+}
+
+.bill {
+  padding: 0.35rem 0.8rem;
+  border: 1px solid rgba(210, 165, 108, 0.6);
+  border-radius: 99px;
+  background: rgba(255, 244, 224, 0.08);
+  color: var(--cream);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.bill.active {
+  border-color: var(--orange);
+  background: var(--orange);
+  color: var(--navy-deep);
+}
+
+.pay-card {
+  margin-bottom: 0.9rem;
+  padding: 0.9rem 1rem;
+  border: 1px dashed var(--gold);
+  border-radius: 16px;
+  background: rgba(210, 165, 108, 0.12);
+}
+
+.pay-card-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+
+.pay-bank {
+  margin-top: 0.35rem;
+  font-size: 0.82rem;
+  opacity: 0.9;
+}
+
+.pay-name {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  color: var(--cream);
+}
+
+.pay-account {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+  padding: 0.45rem 0.6rem 0.45rem 0.8rem;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.pay-account strong {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--orange);
+  word-break: break-all;
+}
+
+.copy-btn {
+  flex-shrink: 0;
+  padding: 0.4rem 0.9rem;
+  border: none;
+  border-radius: 10px;
+  background: var(--orange);
+  color: var(--navy-deep);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pay-note {
+  margin: 0.5rem 0 0.9rem;
+  font-size: 0.74rem;
+  color: rgba(255, 244, 224, 0.8);
+}
+
+.pay-card .pay-note {
+  margin-bottom: 0;
+}
+
 /* ---------- Footer ---------- */
 .footer {
   display: flex;

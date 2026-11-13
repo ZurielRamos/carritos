@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BUSINESS_NAME, WHATSAPP_NUMBER, formatPrice } from '../config'
+import PaymentSection, { dots } from './PaymentSection'
 
 const MODES = [
   { id: 'mesa', label: 'En mesa', icon: '🍽️' },
   { id: 'domicilio', label: 'Domicilio', icon: '🛵' },
 ]
 
-export function buildWhatsAppUrl({ items, name, notes, mode, address, phone }) {
+export function buildWhatsAppUrl({ items, name, notes, mode, address, phone, payment, cash }) {
   const lines = items.map((i) => {
     const comment = i.comment?.trim()
     return comment ? `• ${i.qty} x ${i.name}\n   💬 ${comment}` : `• ${i.qty} x ${i.name}`
@@ -21,6 +22,12 @@ export function buildWhatsAppUrl({ items, name, notes, mode, address, phone }) {
     modeLabel ? `${modeLabel.icon} *Tipo de pedido:* ${modeLabel.label}` : null,
     mode === 'domicilio' && address ? `📍 *Dirección:* ${address}` : null,
     mode === 'domicilio' && phone ? `📞 *Teléfono:* ${phone}` : null,
+    mode === 'domicilio' && payment === 'efectivo' && cash
+      ? `💵 *Pago:* Efectivo, paga con $${dots(cash)}`
+      : null,
+    mode === 'domicilio' && payment === 'transferencia'
+      ? '🏦 *Pago:* Transferencia (enviaré el comprobante)'
+      : null,
     name ? `👤 *Nombre:* ${name}` : null,
     notes ? `📝 *Notas:* ${notes}` : null,
   ]
@@ -105,15 +112,24 @@ export default function CartDrawer({ open, onClose, items, total, onAdd, onRemov
   const [mode, setMode] = useState(null) // 'mesa' | 'domicilio'
   const [address, setAddress] = useState('')
   const [phone, setPhone] = useState('')
+  const [payment, setPayment] = useState(null) // 'efectivo' | 'transferencia'
+  const [cash, setCash] = useState('') // monto con el que paga (solo dígitos)
 
   const needsAddress = mode === 'domicilio'
   const phoneOk = phone.replace(/\D/g, '').length >= 7
-  const canSend = mode !== null && (!needsAddress || (address.trim().length > 0 && phoneOk))
+  const cashOk = Number(cash) >= total && total > 0
+  const paymentOk = payment === 'transferencia' || (payment === 'efectivo' && cashOk)
+  const canSend =
+    mode !== null && (!needsAddress || (address.trim().length > 0 && phoneOk && paymentOk))
 
   let hint = null
   if (!mode) hint = 'Elige si es en mesa o a domicilio'
   else if (needsAddress && !address.trim()) hint = 'Escribe la dirección para el domicilio'
   else if (needsAddress && !phoneOk) hint = 'Escribe un teléfono de contacto válido'
+  else if (needsAddress && !payment) hint = 'Elige cómo vas a pagar'
+  else if (needsAddress && payment === 'efectivo' && !cash) hint = 'Escribe con cuánto vas a pagar'
+  else if (needsAddress && payment === 'efectivo' && !cashOk)
+    hint = 'El monto debe cubrir el total del pedido'
 
   const send = () => {
     if (!canSend) return
@@ -125,6 +141,8 @@ export default function CartDrawer({ open, onClose, items, total, onAdd, onRemov
         mode,
         address: address.trim(),
         phone: phone.trim(),
+        payment,
+        cash,
       }),
       '_blank',
       'noopener',
@@ -134,6 +152,8 @@ export default function CartDrawer({ open, onClose, items, total, onAdd, onRemov
     setMode(null)
     setAddress('')
     setPhone('')
+    setPayment(null)
+    setCash('')
     onClose()
   }
 
@@ -257,6 +277,23 @@ export default function CartDrawer({ open, onClose, items, total, onAdd, onRemov
                         maxLength={20}
                       />
                     </motion.label>
+                  )}
+                  {needsAddress && (
+                    <motion.div
+                      key="payment"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <PaymentSection
+                        payment={payment}
+                        onPayment={setPayment}
+                        cash={cash}
+                        onCash={setCash}
+                        total={total}
+                      />
+                    </motion.div>
                   )}
                 </AnimatePresence>
 
