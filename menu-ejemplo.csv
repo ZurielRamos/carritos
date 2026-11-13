@@ -5,7 +5,7 @@ PRODUCTO,PRECIO,CONTIENE,CATEGORIA,ETIQUETA,IMAGEN
 "Arepa Burguer","$ 10.000","Arepa, Carne de hamburguesa, Queso, Tocineta, Ensalada","Comidas","","/arepa_burguer.webp"
 "Hamburguesa","$ 18.000","Pan, Carne de hamburguesa, Queso, Tocineta, Ensalada","Comidas","","/hamburguesa.jpg"
 "Burritos","$ 12.000","Tortilla, Carne, Pollo, Tocineta, Queso, Ensalada, Maicitos","Comidas","","/burrito.avif"
-"Patacón con carne","$ 12.000","Patacón, Carne, Pollo, Tocineta, Queso, Ensalada, Maicitos","Comidas","","/patacon_carne.webp"
+"Patacón con carne","$ 12.000","Patacón, Carne, Pollo, Tocineta, Queso, Ensalada, Maicitos","Comidas","","/patacon_carne.jpg"
 "Arepa con carne","$ 12.000","Arepa, Carne, Pollo, Tocineta, Queso, Ensalada, Maicitos","Comidas","","/arepa_carne.jpg"
 "Salchipapas","$ 15.000","Papas, Salchicha, Carne, Pollo, Tocineta, Queso, Butifarra","Comidas","","/salchipapas.jpeg"
 "Picada","$ 18.000","Papas, Salchicha, Carne, Pollo, Tocineta, Queso, Butifarra, Chorizo, Arepa, Pechuga","Comidas","","/picada.jpeg"

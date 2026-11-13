@@ -53,7 +53,7 @@
     "name": "Patacón con carne",
     "ingredients": ["Patacón", "Carne", "Pollo", "Tocineta", "Queso", "Ensalada", "Maicitos"],
     "price": 12000,
-    "image": "/patacon_carne.webp"
+    "image": "/patacon_carne.jpg"
   },
   {
     "id": 8,

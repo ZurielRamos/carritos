@@ -36,11 +36,11 @@ function CartLine({ item, onAdd, onRemove, onComment }) {
 
   return (
     <motion.li
-      layout
       className="cart-item"
-      initial={{ opacity: 0, x: 60 }}
+      initial={{ opacity: 0, x: 30 }}
       animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -60, height: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.18 }}
     >
       <div className="cart-row">
         <img src={item.image} alt="" />
@@ -147,6 +147,7 @@ export default function CartDrawer({ open, onClose, items, total, onAdd, onRemov
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
           />
           <motion.aside
             className="drawer"
@@ -155,7 +156,7 @@ export default function CartDrawer({ open, onClose, items, total, onAdd, onRemov
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
-            transition={{ type: 'spring', stiffness: 260, damping: 30 }}
+            transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="drawer-head">
               <h2>TU PEDIDO</h2>
@@ -207,7 +208,7 @@ export default function CartDrawer({ open, onClose, items, total, onAdd, onRemov
                         <motion.span
                           layoutId="mode-bg"
                           className="mode-bg"
-                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                          transition={{ duration: 0.2, ease: 'easeOut' }}
                         />
                       )}
                       <span className="mode-label">

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import TopBar from './components/TopBar'
 import MenuItem from './components/MenuItem'
@@ -22,22 +22,29 @@ export default function App() {
 
   const [comments, setComments] = useState({}) // { [id]: string }
 
-  const add = (id) => setCart((c) => ({ ...c, [id]: (c[id] || 0) + 1 }))
-  const remove = (id) => {
-    setCart((c) => {
-      const next = { ...c, [id]: (c[id] || 0) - 1 }
-      if (next[id] <= 0) delete next[id]
+  // Callbacks estables: así las tarjetas memorizadas no se re-renderizan al agregar un producto
+  const add = useCallback((id) => setCart((c) => ({ ...c, [id]: (c[id] || 0) + 1 })), [])
+  const remove = useCallback(
+    (id) =>
+      setCart((c) => {
+        const next = { ...c, [id]: (c[id] || 0) - 1 }
+        if (next[id] <= 0) delete next[id]
+        return next
+      }),
+    [],
+  )
+  const setComment = useCallback((id, text) => setComments((c) => ({ ...c, [id]: text })), [])
+
+  // Si un producto sale del pedido, también se borra su comentario
+  useEffect(() => {
+    setComments((c) => {
+      const stale = Object.keys(c).filter((id) => !cart[id])
+      if (!stale.length) return c
+      const next = { ...c }
+      stale.forEach((id) => delete next[id])
       return next
     })
-    // Si el producto sale del pedido, también se borra su comentario
-    if ((cart[id] || 0) <= 1) {
-      setComments((c) => {
-        const { [id]: _removed, ...rest } = c
-        return rest
-      })
-    }
-  }
-  const setComment = (id, text) => setComments((c) => ({ ...c, [id]: text }))
+  }, [cart])
 
   const drinks = useMemo(() => products.filter((p) => p.category === DRINKS), [products])
 
@@ -95,7 +102,7 @@ export default function App() {
                       <motion.span
                         layoutId="pill-bg"
                         className="pill-bg"
-                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                        transition={{ duration: 0.22, ease: 'easeOut' }}
                       />
                     )}
                     <span className="pill-label">{c}</span>
@@ -104,20 +111,23 @@ export default function App() {
               </nav>
             </LayoutGroup>
 
-            <div className="items">
-              <AnimatePresence mode="popLayout">
-                {visible.map((p, i) => (
-                  <MenuItem
-                    key={p.id}
-                    product={p}
-                    index={i}
-                    qty={cart[p.id] || 0}
-                    onAdd={() => add(p.id)}
-                    onRemove={() => remove(p.id)}
-                  />
-                ))}
-              </AnimatePresence>
-            </div>
+            <motion.div
+              key={active}
+              className="items"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.18 }}
+            >
+              {visible.map((p) => (
+                <MenuItem
+                  key={p.id}
+                  product={p}
+                  qty={cart[p.id] || 0}
+                  onAdd={add}
+                  onRemove={remove}
+                />
+              ))}
+            </motion.div>
 
             {showDrinksSlider && (
               <DrinksSlider drinks={drinks} cart={cart} onAdd={add} onRemove={remove} />
@@ -139,7 +149,7 @@ export default function App() {
             initial={{ y: 120, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 120, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
             whileTap={{ scale: 0.97 }}
           >
             <span className="cart-bar-handle" />
@@ -147,9 +157,9 @@ export default function App() {
               <motion.span
                 key={count}
                 className="cart-bar-count"
-                initial={{ scale: 1.8 }}
+                initial={{ scale: 1.35 }}
                 animate={{ scale: 1 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 12 }}
+                transition={{ duration: 0.15 }}
               >
                 {count}
               </motion.span>

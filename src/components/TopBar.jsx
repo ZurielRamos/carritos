@@ -4,25 +4,26 @@ export default function TopBar({ count, onCart }) {
   return (
     <motion.div
       className="topbar"
-      initial={{ y: -80, opacity: 0 }}
+      initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ type: 'spring', stiffness: 120, damping: 16 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
     >
       <motion.img
         className="topbar-logo"
-        src="/logo.png"
+        src="/logo-sm.png"
         alt="Carritos Comidas Rápidas"
-        initial={{ rotate: -180, scale: 0 }}
-        animate={{ rotate: 0, scale: 1 }}
-        transition={{ type: 'spring', delay: 0.2, stiffness: 90 }}
-        whileHover={{ rotate: 12, scale: 1.1 }}
+        width="46"
+        height="46"
+        initial={{ rotate: -90, scale: 0.6, opacity: 0 }}
+        animate={{ rotate: 0, scale: 1, opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.1, ease: 'easeOut' }}
       />
       <span className="topbar-title">Comidas Rápidas</span>
       <motion.button
         className="topbar-cart"
         onClick={onCart}
         whileTap={{ scale: 0.88 }}
-        whileHover={{ scale: 1.08 }}
+        transition={{ duration: 0.1 }}
         aria-label={`Ver pedido, ${count} productos`}
       >
         🛒
@@ -30,9 +31,9 @@ export default function TopBar({ count, onCart }) {
           <motion.span
             key={count}
             className="topbar-count"
-            initial={{ scale: 2 }}
+            initial={{ scale: 1.5 }}
             animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 12 }}
+            transition={{ duration: 0.15 }}
           >
             {count}
           </motion.span>
