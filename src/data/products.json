@@ -114,20 +114,6 @@
     "image": "/butifarra.webp"
   },
   {
-    "id": 14,
-    "category": "Bebidas",
-    "name": "Cerveza Pilsen",
-    "price": 4000,
-    "image": "/pilsen.jpg"
-  },
-  {
-    "id": 15,
-    "category": "Bebidas",
-    "name": "Cerveza Aguila Light",
-    "price": 4000,
-    "image": "/aguila_light.webp"
-  },
-  {
     "id": 16,
     "category": "Bebidas",
     "name": "Agua Brisa 600 ML",
@@ -175,5 +161,19 @@
     "name": "Gaseosa Colombiana 400 ML",
     "price": 3000,
     "image": "/colombiana.webp"
+  },
+    {
+    "id": 14,
+    "category": "Bebidas",
+    "name": "Cerveza Pilsen",
+    "price": 4000,
+    "image": "/pilsen.jpg"
+  },
+  {
+    "id": 15,
+    "category": "Bebidas",
+    "name": "Cerveza Aguila Light",
+    "price": 4000,
+    "image": "/aguila_light.webp"
   }
 ]
