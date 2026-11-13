@@ -1,0 +1,123 @@
+[
+  {
+    "id": 1,
+    "category": "Hamburguesas",
+    "name": "Clásica Carritos",
+    "ingredients": ["Carne 150g", "Queso cheddar", "Lechuga", "Tomate", "Salsa de la casa"],
+    "price": 18000,
+    "badge": "Favorita",
+    "image": "/burger.jpg"
+  },
+  {
+    "id": 2,
+    "category": "Hamburguesas",
+    "name": "Doble Bacon",
+    "ingredients": ["Doble carne", "Tocineta crocante", "Queso cheddar", "Tomate", "Mayonesa"],
+    "price": 26000,
+    "badge": "Más pedida",
+    "image": "/burger.jpg"
+  },
+  {
+    "id": 3,
+    "category": "Hamburguesas",
+    "name": "Queso Lover",
+    "ingredients": ["Carne 150g", "Triple queso", "Cebolla caramelizada", "Salsa cheddar"],
+    "price": 22000,
+    "image": "/burger.jpg"
+  },
+  {
+    "id": 4,
+    "category": "Hamburguesas",
+    "name": "BBQ Smoky",
+    "ingredients": ["Carne 150g", "Salsa BBQ", "Aros de cebolla", "Tocineta", "Queso"],
+    "price": 24000,
+    "badge": "Nueva",
+    "image": "/burger.jpg"
+  },
+  {
+    "id": 5,
+    "category": "Hamburguesas",
+    "name": "Picante Fuego",
+    "ingredients": ["Carne 150g", "Jalapeños", "Queso pepper jack", "Salsa picante", "Lechuga"],
+    "price": 23000,
+    "badge": "Picante",
+    "image": "/burger.jpg"
+  },
+  {
+    "id": 6,
+    "category": "Combos",
+    "name": "Combo Clásico",
+    "ingredients": ["Clásica Carritos", "Papas fritas", "Gaseosa 400ml"],
+    "price": 27000,
+    "badge": "Ahorra",
+    "image": "/burger.jpg"
+  },
+  {
+    "id": 7,
+    "category": "Combos",
+    "name": "Combo Doble Bacon",
+    "ingredients": ["Doble Bacon", "Papas fritas", "Gaseosa 400ml"],
+    "price": 35000,
+    "image": "/burger.jpg"
+  },
+  {
+    "id": 8,
+    "category": "Extras",
+    "name": "Papas Carritos",
+    "ingredients": ["Papas crocantes", "Sal marina", "Salsa a elección"],
+    "price": 9000,
+    "image": "/burger.jpg"
+  },
+  {
+    "id": 9,
+    "category": "Extras",
+    "name": "Papas con Queso y Bacon",
+    "ingredients": ["Papas crocantes", "Salsa cheddar", "Tocineta picada"],
+    "price": 14000,
+    "image": "/burger.jpg"
+  },
+  {
+    "id": 10,
+    "category": "Bebidas",
+    "name": "Gaseosa 400ml",
+    "price": 4500,
+    "image": "/burger.jpg"
+  },
+  {
+    "id": 11,
+    "category": "Bebidas",
+    "name": "Limonada Natural",
+    "price": 6000,
+    "badge": "Fresca",
+    "image": "/burger.jpg"
+  },
+  {
+    "id": 12,
+    "category": "Bebidas",
+    "name": "Jugo en Agua",
+    "price": 6500,
+    "image": "/burger.jpg"
+  },
+  {
+    "id": 13,
+    "category": "Bebidas",
+    "name": "Malteada de Vainilla",
+    "price": 10000,
+    "badge": "Nueva",
+    "image": "/burger.jpg"
+  },
+  {
+    "id": 14,
+    "category": "Bebidas",
+    "name": "Té Frío",
+    "price": 5000,
+    "image": "/burger.jpg"
+  },
+  {
+    "id": 15,
+    "category": "Bebidas",
+    "name": "Agua Botella",
+    "price": 3000,
+    "image": "/burger.jpg"
+  }
+]
