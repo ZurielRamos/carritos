@@ -893,6 +893,63 @@ button {
   box-shadow: 0 10px 26px rgba(37, 211, 102, 0.35);
 }
 
+.btn-wa:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.hint {
+  margin-bottom: 0.6rem;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--gold-light);
+}
+
+.mode-toggle {
+  display: flex;
+  gap: 0.3rem;
+  margin-bottom: 0.9rem;
+  padding: 0.25rem;
+  border-radius: 16px;
+  background: rgba(255, 244, 224, 0.1);
+  border: 1px solid rgba(210, 165, 108, 0.6);
+}
+
+.mode-btn {
+  position: relative;
+  flex: 1;
+  padding: 0.6rem 0.4rem;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--cream);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mode-btn.active {
+  color: var(--navy-deep);
+}
+
+.mode-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--gold-light), var(--orange));
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.mode-label {
+  position: relative;
+}
+
+.drawer-foot {
+  max-height: 68vh;
+  overflow-y: auto;
+}
+
 /* ---------- Footer ---------- */
 .footer {
   padding: 2rem 0 1rem;

@@ -2,18 +2,23 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BUSINESS_NAME, WHATSAPP_NUMBER, formatPrice } from '../config'
 
-export function buildWhatsAppUrl({ items, total, name, notes }) {
-  const lines = items.map(
-    (i) => `• ${i.qty} x ${i.name} — ${formatPrice(i.price * i.qty)}`,
-  )
+const MODES = [
+  { id: 'mesa', label: 'En mesa', icon: '🍽️' },
+  { id: 'domicilio', label: 'Domicilio', icon: '🛵' },
+]
+
+export function buildWhatsAppUrl({ items, name, notes, mode, address }) {
+  const lines = items.map((i) => `• ${i.qty} x ${i.name}`)
+  const modeLabel = MODES.find((m) => m.id === mode)
   const message = [
     `Hola ${BUSINESS_NAME}! 🍔 Quiero hacer un pedido:`,
     '',
     ...lines,
     '',
-    `*Total: ${formatPrice(total)}*`,
-    name ? `Nombre: ${name}` : null,
-    notes ? `Notas: ${notes}` : null,
+    modeLabel ? `${modeLabel.icon} *Tipo de pedido:* ${modeLabel.label}` : null,
+    mode === 'domicilio' && address ? `📍 *Dirección:* ${address}` : null,
+    name ? `👤 *Nombre:* ${name}` : null,
+    notes ? `📝 *Notas:* ${notes}` : null,
   ]
     .filter((l) => l !== null)
     .join('\n')
@@ -24,11 +29,35 @@ export function buildWhatsAppUrl({ items, total, name, notes }) {
 export default function CartDrawer({ open, onClose, items, total, onAdd, onRemove, onClear }) {
   const [name, setName] = useState('')
   const [notes, setNotes] = useState('')
+  const [mode, setMode] = useState(null) // 'mesa' | 'domicilio'
+  const [address, setAddress] = useState('')
+
+  const needsAddress = mode === 'domicilio'
+  const canSend = mode !== null && (!needsAddress || address.trim().length > 0)
+
+  const hint = !mode
+    ? 'Elige si es en mesa o a domicilio'
+    : needsAddress && !address.trim()
+      ? 'Escribe la dirección para el domicilio'
+      : null
 
   const send = () => {
-    window.open(buildWhatsAppUrl({ items, total, name: name.trim(), notes: notes.trim() }), '_blank', 'noopener')
+    if (!canSend) return
+    window.open(
+      buildWhatsAppUrl({
+        items,
+        name: name.trim(),
+        notes: notes.trim(),
+        mode,
+        address: address.trim(),
+      }),
+      '_blank',
+      'noopener',
+    )
     onClear()
     setNotes('')
+    setMode(null)
+    setAddress('')
     onClose()
   }
 
@@ -104,12 +133,57 @@ export default function CartDrawer({ open, onClose, items, total, onAdd, onRemov
 
             {items.length > 0 && (
               <div className="drawer-foot">
+                <div className="mode-toggle" role="radiogroup" aria-label="Tipo de pedido">
+                  {MODES.map((m) => (
+                    <button
+                      key={m.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={mode === m.id}
+                      className={`mode-btn ${mode === m.id ? 'active' : ''}`}
+                      onClick={() => setMode(m.id)}
+                    >
+                      {mode === m.id && (
+                        <motion.span
+                          layoutId="mode-bg"
+                          className="mode-bg"
+                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                        />
+                      )}
+                      <span className="mode-label">
+                        <span aria-hidden="true">{m.icon}</span> {m.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                <AnimatePresence initial={false}>
+                  {needsAddress && (
+                    <motion.label
+                      key="address"
+                      className="field"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <span>Dirección de entrega *</span>
+                      <input
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        placeholder="Calle, número, barrio, referencia"
+                        autoComplete="street-address"
+                      />
+                    </motion.label>
+                  )}
+                </AnimatePresence>
+
                 <label className="field">
                   <span>Tu nombre</span>
                   <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ej: Carlos" />
                 </label>
                 <label className="field">
-                  <span>Notas (sin cebolla, dirección, etc.)</span>
+                  <span>Notas (sin cebolla, salsas, etc.)</span>
                   <textarea
                     rows={2}
                     value={notes}
@@ -123,11 +197,13 @@ export default function CartDrawer({ open, onClose, items, total, onAdd, onRemov
                     {formatPrice(total)}
                   </motion.strong>
                 </div>
+                {hint && <p className="hint">{hint}</p>}
                 <motion.button
                   className="btn-wa"
                   onClick={send}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.96 }}
+                  disabled={!canSend}
+                  whileHover={canSend ? { scale: 1.03 } : undefined}
+                  whileTap={canSend ? { scale: 0.96 } : undefined}
                 >
                   <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.8 14.2c-.2.7-1.4 1.3-1.9 1.3-.5.1-1.1.1-1.8-.1a14 14 0 0 1-5.4-3.3 10 10 0 0 1-2-3.3c-.3-1-.1-1.9.5-2.6.2-.2.5-.4.7-.4h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.4.6-.3.3c-.1.2-.1.3 0 .5.5.9 1.2 1.6 2 2.2.8.5 1.3.8 1.7 1 .2.1.4.1.5-.1l.7-.9c.2-.2.4-.2.6-.1l1.9.9c.2.1.4.2.4.3.1.2.1.8-.1 1.2Z" />
