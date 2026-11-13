@@ -65,7 +65,7 @@ const COLUMNS = {
 
 const capitalize = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s)
 
-const slug = (s) =>
+export const slug = (s) =>
   normalize(s)
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '')

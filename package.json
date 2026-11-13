@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "qr": "node scripts/generate-qr.mjs"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.3.0",
+    "qrcode": "1.5.4",
     "vite": "^8.3.8"
   }
 }

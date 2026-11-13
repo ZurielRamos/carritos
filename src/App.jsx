@@ -4,7 +4,9 @@ import TopBar from './components/TopBar'
 import MenuItem from './components/MenuItem'
 import DrinksSlider from './components/DrinksSlider'
 import CartDrawer from './components/CartDrawer'
+import Footer from './components/Footer'
 import { useProducts } from './hooks/useProducts'
+import { loadCart, saveCart } from './lib/cartStorage'
 import { formatPrice } from './config'
 
 const DRINKS = 'Bebidas'
@@ -17,10 +19,16 @@ export default function App() {
   useEffect(() => {
     if (!categories.includes(active)) setActive('Todas')
   }, [categories, active])
-  const [cart, setCart] = useState({}) // { [id]: qty }
+  const [saved] = useState(loadCart) // pedido guardado en el navegador
+  const [cart, setCart] = useState(saved.cart) // { [id]: qty }
   const [open, setOpen] = useState(false)
 
-  const [comments, setComments] = useState({}) // { [id]: string }
+  const [comments, setComments] = useState(saved.comments) // { [id]: string }
+
+  // El pedido y los comentarios se guardan hasta que se envíen por WhatsApp
+  useEffect(() => {
+    saveCart(cart, comments)
+  }, [cart, comments])
 
   // Callbacks estables: así las tarjetas memorizadas no se re-renderizan al agregar un producto
   const add = useCallback((id) => setCart((c) => ({ ...c, [id]: (c[id] || 0) + 1 })), [])
@@ -134,10 +142,7 @@ export default function App() {
             )}
           </section>
 
-          <footer className="footer">
-            <p>Carritos · Comidas Rápidas</p>
-            <p>Pedidos directos por WhatsApp</p>
-          </footer>
+          <Footer />
         </div>
       </div>
 
